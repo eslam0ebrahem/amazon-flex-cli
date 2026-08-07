@@ -80,8 +80,14 @@ var statusCmd = &cobra.Command{
 			emailStr = "Error: " + err.Error()
 		}
 
+		driverName := config.GetDriverName()
+		if driverName == "" {
+			driverName = "—"
+		}
+
 		ui.RenderKeyValueBox("Session", [][2]string{
 			{"State", "✔  Logged in"},
+			{"Name", driverName},
 			{"Email", emailStr},
 			{"Access Token", preview},
 			{"Session ID", config.GetSessionId()},

@@ -909,6 +909,19 @@ func (m dashModel) renderTopBar(w int) string {
 			Foreground(cCyan).Background(cDark).Padding(0, 1).
 			Render("🔍 "+sq))
 	}
+
+	driver := config.GetDriverName()
+	if driver != "" {
+		parts := strings.Fields(driver)
+		if len(parts) > 2 {
+			driver = parts[0] + " " + parts[1]
+		}
+		driverText := lipgloss.NewStyle().
+			Foreground(cWhite).Background(cDark).Padding(0, 1).
+			Render("👤 " + driver + "  |")
+		rightParts = append(rightParts, driverText)
+	}
+
 	clock := lipgloss.NewStyle().
 		Foreground(cOrange).Bold(true).Background(cDark).Padding(0, 2).
 		Render(time.Now().Format("15:04:05"))

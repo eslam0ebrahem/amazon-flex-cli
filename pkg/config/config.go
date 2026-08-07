@@ -114,6 +114,25 @@ func GetBearerToken() string {
 	return ""
 }
 
+func GetDriverName() string {
+	tokens := LoadTokens()
+	if raw, ok := tokens["raw_response"].(map[string]interface{}); ok {
+		if resp, ok := raw["response"].(map[string]interface{}); ok {
+			if success, ok := resp["success"].(map[string]interface{}); ok {
+				if ext, ok := success["extensions"].(map[string]interface{}); ok {
+					if cust, ok := ext["customer_info"].(map[string]interface{}); ok {
+						if name, ok := cust["name"].(string); ok {
+							return name
+						}
+					}
+				}
+			}
+		}
+	}
+	return ""
+}
+
+
 func GetRefreshToken() string {
 	tokens := LoadTokens()
 
