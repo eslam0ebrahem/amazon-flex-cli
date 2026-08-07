@@ -2,6 +2,7 @@ package api
 
 import (
 	"errors"
+	"fmt"
 	"flexcli/pkg/config"
 	"time"
 
@@ -160,4 +161,98 @@ func GetUserProfile() (string, error) {
 	}
 	return "", errors.New("email not found in response")
 }
+
+func GetScheduledAssignments() (map[string]interface{}, error) {
+	token := config.GetBearerToken()
+	if token == "" {
+		return nil, errors.New("not logged in")
+	}
+
+	clientTime := fmt.Sprintf("%d", time.Now().UnixNano()/1e6)
+	instanceId := uuid.New().String()
+
+	resp, err := client.R().
+		SetHeader("Host", "flex-capacity-eu.amazon.com").
+		SetHeader("x-amz-access-token", token).
+		SetHeader("X-Amzn-RequestId", uuid.New().String()).
+		SetHeader("User-Agent", config.RabbitUserAgent).
+		SetHeader("X-Flex-Client-Time", clientTime).
+		SetHeader("x-flex-instance-id", instanceId).
+		SetHeader("x-amzn-marketplace-id", config.MarketplaceId).
+		SetResult(&map[string]interface{}{}).
+		Get("https://flex-capacity-eu.amazon.com/scheduledAssignments")
+
+	if err != nil {
+		return nil, err
+	}
+	if resp.IsError() {
+		return nil, errors.New(resp.String())
+	}
+
+	return *resp.Result().(*map[string]interface{}), nil
+}
+
+func UpdateWorkPhone(phone string) error {
+	token := config.GetBearerToken()
+	if token == "" {
+		return errors.New("not logged in")
+	}
+
+	payload := map[string]interface{}{
+		"person": map[string]interface{}{
+			"workPhoneNumber": phone,
+		},
+	}
+
+	clientTime := fmt.Sprintf("%d", time.Now().UnixNano()/1e6)
+	instanceId := uuid.New().String()
+
+	resp, err := client.R().
+		SetHeader("Host", "tas-uk-extern.amazon.com").
+		SetHeader("x-amz-access-token", token).
+		SetHeader("X-Amzn-RequestId", uuid.New().String()).
+		SetHeader("User-Agent", config.RabbitUserAgent).
+		SetHeader("X-Flex-Client-Time", clientTime).
+		SetHeader("x-flex-instance-id", instanceId).
+		SetBody(payload).
+		Put("https://tas-uk-extern.amazon.com/person")
+
+	if err != nil {
+		return err
+	}
+	if resp.IsError() {
+		return errors.New(resp.String())
+	}
+	return nil
+}
+
+func GetAssociatedTRs() (map[string]interface{}, error) {
+	token := config.GetBearerToken()
+	if token == "" {
+		return nil, errors.New("not logged in")
+	}
+
+	payload := map[string]interface{}{
+		"nameValuePairs": map[string]interface{}{},
+	}
+
+	resp, err := client.R().
+		SetHeader("Host", "ptras-eu-extern.amazon.com").
+		SetHeader("x-amz-access-token", token).
+		SetHeader("X-Amzn-RequestId", uuid.New().String()).
+		SetHeader("User-Agent", config.RabbitUserAgent).
+		SetBody(payload).
+		SetResult(&map[string]interface{}{}).
+		Post("https://ptras-eu-extern.amazon.com/tr/GetAssociatedTRsExternal")
+
+	if err != nil {
+		return nil, err
+	}
+	if resp.IsError() {
+		return nil, errors.New(resp.String())
+	}
+
+	return *resp.Result().(*map[string]interface{}), nil
+}
+
 
