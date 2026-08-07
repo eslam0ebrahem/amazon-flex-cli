@@ -1,0 +1,19 @@
+# Compiled Binaries
+flexcli
+flexcli.exe
+*.test
+*.out
+
+# Database & Secrets (CRITICAL: Do not commit tokens or personal itineraries)
+DB/
+
+# OS Specific
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+
+# IDEs
+.idea/
+.vscode/
+*.swp
