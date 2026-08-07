@@ -72,8 +72,17 @@ var statusCmd = &cobra.Command{
 		if len(token) > 20 {
 			preview = token[:20] + "…"
 		}
+
+		emailStr := "Loading..."
+		if email, err := api.GetUserProfile(); err == nil {
+			emailStr = email
+		} else {
+			emailStr = "Error: " + err.Error()
+		}
+
 		ui.RenderKeyValueBox("Session", [][2]string{
 			{"State", "✔  Logged in"},
+			{"Email", emailStr},
 			{"Access Token", preview},
 			{"Session ID", config.GetSessionId()},
 		})

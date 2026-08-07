@@ -131,3 +131,33 @@ func Refresh() (map[string]interface{}, error) {
 	}
 	return *resp.Result().(*map[string]interface{}), nil
 }
+
+func GetUserProfile() (string, error) {
+	token := config.GetBearerToken()
+	if token == "" {
+		return "", errors.New("not logged in")
+	}
+
+	resp, err := client.R().
+		SetHeader("Host", config.ApiHost).
+		SetHeader("x-amzn-identity-auth-domain", config.AuthDomain).
+		SetHeader("X-Amzn-RequestId", uuid.New().String()).
+		SetHeader("Authorization", "Bearer "+token).
+		SetHeader("User-Agent", config.RefreshUserAgent).
+		SetResult(&map[string]interface{}{}).
+		Get("https://" + config.ApiHost + "/user/profile?attributes=email")
+
+	if err != nil {
+		return "", err
+	}
+	if resp.IsError() {
+		return "", errors.New(resp.String())
+	}
+
+	result := *resp.Result().(*map[string]interface{})
+	if email, ok := result["email"].(string); ok {
+		return email, nil
+	}
+	return "", errors.New("email not found in response")
+}
+

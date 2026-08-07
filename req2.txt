@@ -1,0 +1,146 @@
+<?xml version="1.1"?>
+<!-- NOTE: Any NULL bytes in requests and responses are preserved within this output, even though this strictly breaks the XML syntax. If your XML parser rejects the NULL bytes then you will need to remove or replace these bytes before parsing. Alternatively, you can use the option to base64-encode requests and responses. -->
+<!DOCTYPE items [
+<!ELEMENT items (item*)>
+<!ATTLIST items burpVersion CDATA "">
+<!ATTLIST items exportTime CDATA "">
+<!ELEMENT item (time, url, host, port, protocol, method, path, extension, request, status, responselength, mimetype, response, comment)>
+<!ELEMENT time (#PCDATA)>
+<!ELEMENT url (#PCDATA)>
+<!ELEMENT host (#PCDATA)>
+<!ATTLIST host ip CDATA "">
+<!ELEMENT port (#PCDATA)>
+<!ELEMENT protocol (#PCDATA)>
+<!ELEMENT method (#PCDATA)>
+<!ELEMENT path (#PCDATA)>
+<!ELEMENT extension (#PCDATA)>
+<!ELEMENT request (#PCDATA)>
+<!ATTLIST request base64 (true|false) "false">
+<!ELEMENT status (#PCDATA)>
+<!ELEMENT responselength (#PCDATA)>
+<!ELEMENT mimetype (#PCDATA)>
+<!ELEMENT response (#PCDATA)>
+<!ATTLIST response base64 (true|false) "false">
+<!ELEMENT comment (#PCDATA)>
+]>
+<items burpVersion="2026.7.3" exportTime="Fri Aug 07 18:26:36 CEST 2026">
+  <item>
+    <time>Thu Aug 06 21:44:21 CEST 2026</time>
+    <url><![CDATA[https://api.amazon.es/auth/register]]></url>
+    <host ip="3.253.179.30">api.amazon.es</host>
+    <port>443</port>
+    <protocol>https</protocol>
+    <method><![CDATA[POST]]></method>
+    <path><![CDATA[/auth/register]]></path>
+    <extension>null</extension>
+    <request base64="false"><![CDATA[POST /auth/register HTTP/1.1
+x-amzn-identity-auth-domain: .amazon.es
+X-Amzn-RequestId: 40b2eb89-d8b1-4872-80b3-0c136037e694
+Accept-Language: en-US
+Content-Type: application/json
+Content-Length: 1508
+User-Agent: Dalvik/2.1.0 (Linux; U; Android 16; M2101K7BG Build/BP4A.251205.006)
+Host: api.amazon.es
+Connection: keep-alive
+Accept-Encoding: gzip, deflate, br
+
+{"auth_data":{"use_global_authentication":"true","user_id_password":{"user_id":"ahmmedmagdy.opexegypt@gmail.com","password":"Opex@133771"}},"registration_data":{"domain":"DeviceLegacy","device_type":"A1MPSLFC7L5AFK","device_serial":"0f7d079cbd9b4e6e8512568000871bd3","app_name":"com.amazon.flex.rabbit","app_version":"314455008","device_model":"M2101K7BG","os_version":"Redmi\/secret_global\/secret:12\/SP1A.210812.016\/V14.0.11.0.TKLMIXM:user\/release-keys","software_version":"130050002"},"requested_token_type":["bearer","mac_dms","store_authentication_cookie","website_cookies"],"cookies":{"domain":"amazon.es","website_cookies":[]},"age_info":{"third_party_age_category":"NO_SIGNAL"},"user_context_map":{"frc":"AD62+S7cTnHMKDM4o8jw+BiMpO+9SUBTzDVSFfp+u3pbP2fleGsgVOdGvQEFQQxWYss4dYtd8Ht3Eia0vZZPFd8EsOZgRO52sZgu0aMIKNrWxsqUc7zWOVTX\/MoktlqazejTnn2G5dEGSxj2DPPC6TmCZYZqUEaBMazSz0pkRJ1vns2faJ7afR6nBnLes\/vJMcKIZx646r4v6tHoj9KDr4siQ41RW\/Uvh5xE3sBOJ0Zh9PMTB+bkamwxLY+tGvDdIwrwdKd6XiRuki26mt1v4dn6UiSocD\/nNsFBmKDIed2ruasoqOwaRWqBsaFSfKVrS21fTGdTJ627D8\/cBViaDqkDFAVTH8IdELtuBFFVF5ZiB5uCKOd5tEaTTQ0i0L\/HnSlltvO\/J84D9fesbyf2CPheyr1Gs+\/ZtwYbjJyDIvDpp+kUGqSGuabLQCHKLg5aVVf4Pd8Uua2g7WMglIGG185BXefba6VlhHif42\/xk78E7KmCtECE0LY="},"device_metadata":{"device_os_family":"android","device_type":"A1MPSLFC7L5AFK","device_serial":"0f7d079cbd9b4e6e8512568000871bd3","manufacturer":"Xiaomi","model":"M2101K7BG","os_version":"36","product":"rosemary_global"},"requested_extensions":["device_info","customer_info"]}]]></request>
+    <status>200</status>
+    <responselength>5357</responselength>
+    <mimetype>JSON</mimetype>
+    <response base64="false"><![CDATA[HTTP/1.1 200 OK
+Server: Server
+Date: Thu, 06 Aug 2026 19:44:21 GMT
+Content-Type: application/json;charset=UTF-8
+Content-Length: 4884
+Connection: keep-alive
+x-amz-rid: KY8Q8Q1J83A6TFHY5V6E
+x-amzn-RequestId: 40b2eb89-d8b1-4872-80b3-0c136037e694
+X-Amz-Date: Thu, 06 Aug 2026 19:44:21 GMT
+Cache-Control: no-cache, no-store, must-revalidate
+Pragma: no-cache
+Vary: Accept-Encoding,User-Agent
+Strict-Transport-Security: max-age=47474747; includeSubDomains; preload
+
+{"response":{"success":{"extensions":{"device_info":{"device_name":"Ahmed's 3rd Android Device","device_serial_number":"0f7d079cbd9b4e6e8512568000871bd3","device_type":"A1MPSLFC7L5AFK"},"age_classification":"ADULT","customer_info":{"account_pool":"Amazon","preferred_marketplace":"A1RKKUPIHCS9HS","country_of_residence":"ES","user_id":"amzn1.account.AGDXVC3BT6HVGEJPG5TUAQTQ2R3A","home_region":"EU","name":"Ahmed Magdy Mohamed Mohamed","given_name":"Ahmed","source_of_country_of_residence":"IP_ADDRESS"}},"tokens":{"store_authentication_cookie":{"cookie":"82xqHXLHJaD86Ox8koI48e1NNKtZk+TbOXQ/v6fkYKr4Q9d/qya2SbtS1Wr1SQ6eoAWs+3hO/Ovd/i+MbaIziuH0zJwNjpnk0+A0C05faCz4WO+G3GeGrwjDkSjAYqNXfMzm/jPQ6oLGqRPeZAqE/RBc18xGq+mOGqsItqTpnpFcFhcnOjfT2w=="},"mac_dms":{"device_private_key":"-----BEGIN RSA PRIVATE KEY-----\nMIIEowIBAAKCAQEAndAjdyz0/BOsreEuxWr0bZR0iCTahLhpBvOcs6vZt7KUjpF5\nW7p6s/AoJQeTjNOpcPPwY2E9H2nkEHI9+py8P5x/iWnIwWwNUI0ssbT7GvjCpYiJ\nM7ozlD5qIBffiQ6CiwQw9vfCUHz5oqCh7fmg89cTYVaBZygmj3qbq0gw5c4Cbpch\nq8uSyXPOmfFVQE8hRpUjAZMziSAR2W/IQchMyBAk6PiFSVHI93Q9HSqtmVPhgXIE\nkYY5IXJPyT8S8X22GRx6KH0WUlBoi1MCl/HZerlGnU5RaP5ZdkfIYwPXJhTBiBpi\nWUp/G67B3ykP7qvvg3Y3q1gjNrpU2Zq9yvR9NQIDAQABAoIBAHTRHW+aV75A0hHk\nHjsEcOqseZZNsXONDjGXIufczcys5EqkZLEB2NJZc131vcMA6uwxpj/qOtSGDcwe\nxMI+QxrTPZT6OSD0WubFmc/xp+7PNUZTSzx/GK8jhGs9QLqzgu5kq9okjDIIUMGR\nJkyB/CKDklT7M86oaeLLX2/qgEeajXT+8p59AwdZM7pPpMcP3CoOYJAw8o7ccRBK\nB1aQKwOLfHx/1SVuaN2YH/eK4Z4ndaY54wQhvcZ+3LZzK7lbibqbxJiMHvbbh/BD\ndcdnXZsUfw+AUMXNu+EOZlVReT654PFZtfIGF5DKypwB4CKOlI8BixwILUpGssim\no6+NogECgYEAz+A/+DNhV+yWx5DTUUsQqQmeVMp93oRWZmxF88eP47ELjuKlwk0h\ngPTQVgGcCfkEYASsQrrCrQ+0L7HlHCwpuWZRGcqKdQbnLWVC0J6QqxKbyaQNzdbN\nwZx0SvwBKorqFXrKlDJmmEWEgWNXFFEiYIWQjCRFoa4LamPpBn71M5cCgYEAwljp\n3anPX1COXLdeW6Xv7iNo5wvC6UiXr5S0LMp57AaE7HEQz59LOWyuuRf0KdOZBtGh\nO8UtPzErXUbjPXWV1A3IrcTeEsGlWn7Timb9BIPh6NuI9K25Bw4ew8y17rdELClf\nIi9au3x8LQc8uedA/klupqSw2kJ/pig4PJVcvxMCgYBiAhXG/NqRbM+uKb8oHd8u\nA4Xt7kaoCfb+dWAJzvYtYQTVClEiqeD4/vPXCQ07undwmeNp1soAdF38+r/Np5jI\ne9AS++aJxIZsZci5uXj132EqEbocaYE7HnvJ+sTF/Rbep7UpaBXtByGxK1gcESDH\nJ1H+cP+PehKRx6dPU75h4wKBgQCfLtKHA6Jd8I5adLrtmDG4PPqcW+7Owu2zG7qk\nAUfxwbk4LLfXRyMHKvTFmFAdvjnV8vf8C9muq6hYI0rXOSt6X7viUKCQflngkIbW\nEtrkytzLrJ01w+EMXU1nlJHjr+o/vbc1OdI4RJM1EntzzW1Xmm/uQHC2pMcHImRF\ngxVPTwKBgHHTKLM0/5B3RJATKIuGnKrzF03xS0KZzBbjRDYpI1Ms+w+BphsYVYo/\nmswDmWY/bMe2fPKGY2u/n9ed2cmF7oibbSz5+lfcjPtNwCT0BqZMLCO9CUPZtddG\nlAHDXDh2obuPj26SRb8dD2YfWQR9KPhXX0XTmpaR+luUjaVLnHn6\n-----END RSA PRIVATE KEY-----\n","adp_token":"{enc:txn3M13aaTjXeBAJMhSMf3VyLdXu5G3EIt4eK19MFeNEbUHmiRoBx6RGDWHF3Kn/Xa8lf0j9h1eJpBUYSw+cj4z2gPBPHMcH85xF1GFWoT7L1SI8MWDHih7iT1dAFHnWfMldj5tu2IXcr+GVuRVKU1Lyi9Zt/HzHCEddHEaYPUurbslsF2ePQh2zrvG6NHdcuslbm9d5mXRPqEQ+n4MeBrAJbSl2Av+oy9Sj1eBsMJ1sSqLjqbDv7okM0OJoXpQzbtWCm1nydxi0XVelgYNxwVhweMhBIElt5o/rIGS8Xopv/udtNkY0KvYcAYsXUGxx+ZvisoAVjTL5E648Qtz+PZ7IgvBOHP7iY+z3hi8dtZcHN77JSIl1dn9MzEvL2WzdpH8XDMurlSWlRRe2AiJd8oebi0SW3G15oRZRU2PxnVmBSKC+x6/6ppxHOa1iaZ9leLFYvDagRTFnhZ6hs7VlwN2zbt+Iz2eYQ41CYkanyS0wS6G11ct/OtYYYtLwO4seS2bg0xgDhb3McXKXrVLXXzJjxMj5LPRExQE8yH/Ag+ZP7PcJqYl1Er0SBCZRLv/60xLEvD9/JtjS3OqvqPKOIm/uUmYHlkqz5QG3gX7uPQ9HaLgOufBpxiFhmCwuBvt80VlKPU1jAy5dUfDL7/J6HRcsQsgj1a8LpV6cENAkygEfpSzNv/nMGNoBIKhfaDSur317AW1e2Y5c5+MMOwsJALr/Jy3puTRERwUvb2eYaFhEHXwlflXwXj+WVjXnEzJvU+Lcdl33cu4HAYDT/7Xe5LLbiPNhvtyCAT8RLxJftRljyl4oEm4sJ6P1uYawXgYG9ypfiA0PFgij9kNvfVjIXMf6GwIwB0t6ar0m3mm/05TD5TwRtpw2Um5Jk/f5FWPiGbqXfM+Tz8Xk2tzlcnRyaivLvVzGZV/dLQBOyBTm0tTjubN4Xus6yeUjUK25fv1UUb8+61ZBEkS4Os8mtj7MDZ7kSrNL3/9Ptld2DwKzJB67AYHLWNe3T+rCvaHUFMrgb6d6HPaflTSuX7BtGSZ0oHGDslk7eAmg+47XXqKqTUJisAcd1tXIr8Y6IInmPUUE}{key:IDjGlQuD5+bZNX/7g98WJkE9zgvkp0K3SejiCADwPA9a9hNhj8QU6J2slIns5oU68sAYT7ma4R/QBKXj6JCbxNNYz0ZabHSZPSc1fmF1roP28pIY0reZLrVLrQW/I/aL1+nM4u55VI4HQYQdSERVB0De4wyn3RZGKJVJrrrMto4rVHA7a6T93RkJ0IQ83DB4hd1FPRKZeA+0GEjq0hj3MmbMQ54kSpX2HfyRqnQG5ZiuLRPJU+9qAnafCcqc49YQROX1GPqpc/FtTfceZEU01Lx44zYRlAUCdJfmw1rNdk1KGERAxl1SzM9n92AOZBv6GJPJnG3iHT6aQ8hBuB0LHw==}{iv:fZHWIgU7r13oH8XLj7U+4A==}{name:QURQVG9rZW5FbmNyeXB0aW9uS2V5}{serial:Mg==}"},"bearer":{"access_token":"Atna|EwMDIF7bHS0YWFKb8dzCPK4zgYjv-I6Eds8tY6ShAmU4XAuXp2PA3sBqh2DfztMe1ptbr7E6DxRghP37JrnmM13XGqIUZWzZo39609lLOZlwdY0FT_ObR2UmjokH-jK4wA5Pjlr-w4jFa58KwksEgB9JMn4KO4deAn9GGUHu4dQ2zOqg3VXF_rcg8vSa1tFKkY7YiBkhyraG25WGk7oob2OIqe9h1IWhBuR5woQArpne7faXg6x883EyLrZJmP9Pc3ScDLpDF1a0T4n5Cbir-L8X-yCnqOyqA_OF9Pt3nzMMnYdF4ShVOCEdW4Jv3PzbSvRajNY","refresh_token":"Atnr|EwMDINEfQ6yjg_ET2dCF0XpshT6MiekSGQQY48FBF2IOeqo6BVilhYoCZMgz-m9s0oDTDteXHjs07_Gh241GerWLtAStgm2XsFXvgjkxmQwbiPZT4Osr7GU_MhV2vVDc84ZKVTmjDvHrOXRv0InpMhB29G7VWKcjEVktYuwILsbwDs0VriiNQDmD8gVjSFkTvQLD5q4ahLszFf_U6hzXtq-VYN6OAJIzSJJbYZf203Ynh6khZ3kEWpffdn3KknJ9m3CGpvzzv82sRD7bWcxosjHu8_kJh23zaM-c_005kptNgn5R7NeXu20KJpWiNwZqdvCv7cNV4pwB7OyQVx_rhsr0OV47","expires_in":"3600"}},"customer_id":"amzn1.account.AGDXVC3BT6HVGEJPG5TUAQTQ2R3A"}},"request_id":"40b2eb89-d8b1-4872-80b3-0c136037e694"}]]></response>
+    <comment></comment>
+  </item>
+  <item>
+    <time>Thu Aug 06 22:44:01 CEST 2026</time>
+    <url><![CDATA[https://api.amazon.es/auth/token]]></url>
+    <host ip="3.253.179.30">api.amazon.es</host>
+    <port>443</port>
+    <protocol>https</protocol>
+    <method><![CDATA[POST]]></method>
+    <path><![CDATA[/auth/token]]></path>
+    <extension>null</extension>
+    <request base64="false"><![CDATA[POST /auth/token HTTP/1.1
+x-amzn-identity-auth-domain: .amazon.es
+X-Amzn-RequestId: 00e3be1a-6f1a-482a-ab89-ef280e0c588a
+User-Agent: AmazonWebView/MAPClientLib/130050002/Android/16/M2101K7BG
+Content-Type: application/json
+Host: api.amazon.es
+Connection: keep-alive
+Accept-Encoding: gzip, deflate, br
+Content-Length: 921
+
+{"app_name":"com.amazon.flex.rabbit","app_version":"130050002","source_token_type":"refresh_token","source_token":"Atnr|EwMDINEfQ6yjg_ET2dCF0XpshT6MiekSGQQY48FBF2IOeqo6BVilhYoCZMgz-m9s0oDTDteXHjs07_Gh241GerWLtAStgm2XsFXvgjkxmQwbiPZT4Osr7GU_MhV2vVDc84ZKVTmjDvHrOXRv0InpMhB29G7VWKcjEVktYuwILsbwDs0VriiNQDmD8gVjSFkTvQLD5q4ahLszFf_U6hzXtq-VYN6OAJIzSJJbYZf203Ynh6khZ3kEWpffdn3KknJ9m3CGpvzzv82sRD7bWcxosjHu8_kJh23zaM-c_005kptNgn5R7NeXu20KJpWiNwZqdvCv7cNV4pwB7OyQVx_rhsr0OV47","requested_token_type":"access_token","device_metadata":{"device_os_family":"android","device_type":"A1MPSLFC7L5AFK","device_serial":"0f7d079cbd9b4e6e8512568000871bd3","manufacturer":"Xiaomi","model":"M2101K7BG","os_version":"36","product":"rosemary_global"},"map_version":{"current_version":"20251216N","package_name":"com.amazon.flex.rabbit","platform":"Android","client_metrics_integrated":true},"age_info":{"third_party_age_category":"NO_SIGNAL"}}]]></request>
+    <status>200</status>
+    <responselength>1753</responselength>
+    <mimetype>JSON</mimetype>
+    <response base64="false"><![CDATA[HTTP/1.1 200 OK
+Server: Server
+Date: Thu, 06 Aug 2026 20:44:00 GMT
+Content-Type: application/json;charset=UTF-8
+Content-Length: 1280
+Connection: keep-alive
+x-amz-rid: T1F57Q5N4B3WMME1HYS7
+x-amzn-RequestId: 00e3be1a-6f1a-482a-ab89-ef280e0c588a
+X-Amz-Date: Thu, 06 Aug 2026 20:44:00 GMT
+Cache-Control: no-cache, no-store, must-revalidate
+Pragma: no-cache
+Vary: Accept-Encoding,User-Agent
+Strict-Transport-Security: max-age=47474747; includeSubDomains; preload
+
+{"access_token":"Atna|EwMDIKp5y-ECwc-3-TBaNRCKQPHFz95TmDB3qLejIjaffVYQ46Pq3Y7q7nkdNZoNdXPrHAwdW6R6hRDqqFnRsCrLq6OO50ThHJa5dV34SrauT3v1yKaBzsxaos5MwYhor_YDaVhlDYRgVU6yAHaB1eNXw203tWsv7u4O7H3yBfMJ5dfm_F7XiJfxtmCP5wKhNVpwA75oieHgD0X-kqrZFCEt5-dp-f2uGd9ey9unM8HhZmgSaeGcWptEmgs4ALE5A7PRHAQ9C-mBZtyKQsKoXgO3o0yzkt22gr38KNALW70hGtg9a-muy7xajVBNjzDznS2ZYOI9J4dKLAqmn1SDRkxxNz1SO34baDqYMxzxQ2jXiTZvlg","secureSessionToken":"Sst1|PQKtJfTD8W5P8R2vMBteTxDHBxrAkegL_JcPmGxdjB3HrfekqmXvFdsNfvH-YPX1qFI08EIRgRpVJxg4G0fNQrdQSuUFfjvJIMi-8k7XibkuDZpdJlpHTaCGlNpQ9yxUH21i1jeuvQZbnKprWhTN63e-3KJH8pt-KUZonhB-ZvqVXDTO7nk50wThp0bdYH8wd6qmTMK6nz5k5SIPDA_EpVPYIn7RJqFIl_kS6a3dyQTdsJhq-2KNzKQ27wSNJL2FB-zh","age_classification":{"age_classification":"ADULT"},"response":{"token_expires_in":"3600","token_type":"bearer_token","token":"Atna|EwMDIKp5y-ECwc-3-TBaNRCKQPHFz95TmDB3qLejIjaffVYQ46Pq3Y7q7nkdNZoNdXPrHAwdW6R6hRDqqFnRsCrLq6OO50ThHJa5dV34SrauT3v1yKaBzsxaos5MwYhor_YDaVhlDYRgVU6yAHaB1eNXw203tWsv7u4O7H3yBfMJ5dfm_F7XiJfxtmCP5wKhNVpwA75oieHgD0X-kqrZFCEt5-dp-f2uGd9ey9unM8HhZmgSaeGcWptEmgs4ALE5A7PRHAQ9C-mBZtyKQsKoXgO3o0yzkt22gr38KNALW70hGtg9a-muy7xajVBNjzDznS2ZYOI9J4dKLAqmn1SDRkxxNz1SO34baDqYMxzxQ2jXiTZvlg"},"token_type":"bearer","expires_in":3600,"request_id":"00e3be1a-6f1a-482a-ab89-ef280e0c588a"}]]></response>
+    <comment></comment>
+  </item>
+  <item>
+    <time>Thu Aug 06 21:44:22 CEST 2026</time>
+    <url><![CDATA[https://api.amazon.es/user/profile?attributes=email]]></url>
+    <host ip="3.253.179.30">api.amazon.es</host>
+    <port>443</port>
+    <protocol>https</protocol>
+    <method><![CDATA[GET]]></method>
+    <path><![CDATA[/user/profile?attributes=email]]></path>
+    <extension>null</extension>
+    <request base64="false"><![CDATA[GET /user/profile?attributes=email HTTP/1.1
+X-Amzn-RequestId: be3e487f-dfe9-43cb-8a1a-12cf989208c8
+Authorization: Bearer Atna|EwMDIF7bHS0YWFKb8dzCPK4zgYjv-I6Eds8tY6ShAmU4XAuXp2PA3sBqh2DfztMe1ptbr7E6DxRghP37JrnmM13XGqIUZWzZo39609lLOZlwdY0FT_ObR2UmjokH-jK4wA5Pjlr-w4jFa58KwksEgB9JMn4KO4deAn9GGUHu4dQ2zOqg3VXF_rcg8vSa1tFKkY7YiBkhyraG25WGk7oob2OIqe9h1IWhBuR5woQArpne7faXg6x883EyLrZJmP9Pc3ScDLpDF1a0T4n5Cbir-L8X-yCnqOyqA_OF9Pt3nzMMnYdF4ShVOCEdW4Jv3PzbSvRajNY
+User-Agent: AmazonWebView/MAPClientLib/130050002/Android/16/M2101K7BG
+x-amzn-identity-auth-domain: .amazon.es
+Host: api.amazon.es
+Connection: keep-alive
+Accept-Encoding: gzip, deflate, br
+
+]]></request>
+    <status>200</status>
+    <responselength>469</responselength>
+    <mimetype>JSON</mimetype>
+    <response base64="false"><![CDATA[HTTP/1.1 200 OK
+Server: Server
+Date: Thu, 06 Aug 2026 19:44:22 GMT
+Content-Type: application/json;charset=UTF-8
+Content-Length: 43
+Connection: keep-alive
+x-amz-rid: XY6B9P63M2G4AWWKCYQS
+x-amzn-RequestId: be3e487f-dfe9-43cb-8a1a-12cf989208c8
+X-Amz-Date: Thu, 06 Aug 2026 19:44:22 GMT
+Content-Language: en-US
+Vary: Accept-Encoding,User-Agent
+Strict-Transport-Security: max-age=47474747; includeSubDomains; preload
+
+{"email":"ahmmedmagdy.opexegypt@gmail.com"}]]></response>
+    <comment></comment>
+  </item>
+</items>
