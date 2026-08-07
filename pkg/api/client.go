@@ -255,4 +255,95 @@ func GetAssociatedTRs() (map[string]interface{}, error) {
 	return *resp.Result().(*map[string]interface{}), nil
 }
 
+func GetActiveDevice() (map[string]interface{}, error) {
+	token := config.GetBearerToken()
+	if token == "" {
+		return nil, errors.New("not logged in")
+	}
 
+	clientTime := fmt.Sprintf("%d", time.Now().UnixNano()/1e6)
+	instanceId := uuid.New().String()
+
+	resp, err := client.R().
+		SetHeader("Host", "odcs-eu-extern.amazon.com").
+		SetHeader("x-amz-access-token", token).
+		SetHeader("X-Amzn-RequestId", uuid.New().String()).
+		SetHeader("User-Agent", config.RabbitUserAgent).
+		SetHeader("X-Flex-Client-Time", clientTime).
+		SetHeader("x-flex-instance-id", instanceId).
+		SetBody(map[string]interface{}{}).
+		SetResult(&map[string]interface{}{}).
+		Post("https://odcs-eu-extern.amazon.com/external/GetActiveDeviceForUserExternal")
+
+	if err != nil {
+		return nil, err
+	}
+	if resp.IsError() {
+		return nil, errors.New(resp.String())
+	}
+
+	return *resp.Result().(*map[string]interface{}), nil
+}
+
+func SetActiveDevice() error {
+	token := config.GetBearerToken()
+	if token == "" {
+		return errors.New("not logged in")
+	}
+
+	payload := map[string]interface{}{
+		"deviceId": config.DeviceSerial,
+	}
+
+	clientTime := fmt.Sprintf("%d", time.Now().UnixNano()/1e6)
+	instanceId := uuid.New().String()
+
+	resp, err := client.R().
+		SetHeader("Host", "odcs-eu-extern.amazon.com").
+		SetHeader("x-amz-access-token", token).
+		SetHeader("X-Amzn-RequestId", uuid.New().String()).
+		SetHeader("User-Agent", config.RabbitUserAgent).
+		SetHeader("X-Flex-Client-Time", clientTime).
+		SetHeader("x-flex-instance-id", instanceId).
+		SetBody(payload).
+		Post("https://odcs-eu-extern.amazon.com/external/SetActiveDeviceExternal")
+
+	if err != nil {
+		return err
+	}
+	if resp.IsError() {
+		return errors.New(resp.String())
+	}
+	return nil
+}
+
+func GetRealTimeAvailability() (map[string]interface{}, error) {
+	token := config.GetBearerToken()
+	if token == "" {
+		return nil, errors.New("not logged in")
+	}
+
+	clientTime := fmt.Sprintf("%d", time.Now().UnixNano()/1e6)
+	instanceId := uuid.New().String()
+
+	resp, err := client.R().
+		SetHeader("Host", "flex-capacity-eu.amazon.com").
+		SetHeader("x-amz-access-token", token).
+		SetHeader("X-Amzn-RequestId", uuid.New().String()).
+		SetHeader("User-Agent", config.RabbitUserAgent).
+		SetHeader("X-Flex-Client-Time", clientTime).
+		SetHeader("x-flex-instance-id", instanceId).
+		SetHeader("x-amzn-app-source", "Google Play Store").
+		SetHeader("x-amzn-marketplace-id", config.MarketplaceId).
+		SetResult(&map[string]interface{}{}).
+		Get("https://flex-capacity-eu.amazon.com/realTimeAvailability")
+
+	if err != nil {
+		return nil, err
+	}
+	if resp.IsError() {
+		return nil, errors.New(resp.String())
+	}
+
+	return *resp.Result().(*map[string]interface{}), nil
+}

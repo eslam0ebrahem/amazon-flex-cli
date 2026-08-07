@@ -70,9 +70,30 @@ var toursCmd = &cobra.Command{
 	},
 }
 
+var instantOffersCmd = &cobra.Command{
+	Use:   "instant-offers",
+	Short: "Check Real-Time Availability (Instant Offers) status",
+	Run: func(cmd *cobra.Command, args []string) {
+		ui.PrintTitle("Instant Offers Status")
+		ui.PrintInfo("Checking availability...")
+
+		data, err := api.GetRealTimeAvailability()
+		if err != nil {
+			ui.PrintError("Failed to check status: " + err.Error())
+			return
+		}
+
+		b, _ := json.MarshalIndent(data, "", "  ")
+		ui.PrintSuccess("Status retrieved:")
+		println(string(b))
+	},
+}
+
 func init() {
 	driverCmd.AddCommand(updatePhoneCmd)
 	driverCmd.AddCommand(assignmentsCmd)
 	driverCmd.AddCommand(toursCmd)
+	driverCmd.AddCommand(instantOffersCmd)
 	rootCmd.AddCommand(driverCmd)
 }
+
