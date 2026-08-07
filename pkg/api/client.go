@@ -29,7 +29,7 @@ func Login(email, password string) (map[string]interface{}, error) {
 			},
 		},
 		"registration_data": map[string]interface{}{
-			"domain":           "DeviceLegacy",
+			"domain":           "Device",
 			"device_type":      config.DeviceType,
 			"device_serial":    config.DeviceSerial,
 			"app_name":         config.AppName,
@@ -81,6 +81,10 @@ func Login(email, password string) (map[string]interface{}, error) {
 func Refresh() (map[string]interface{}, error) {
 	atnr := config.GetRefreshToken()
 	if atnr == "" {
+		email, password := config.GetSavedCredentials()
+		if email != "" && password != "" {
+			return Login(email, password)
+		}
 		return nil, errors.New("no refresh token saved")
 	}
 

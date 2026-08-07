@@ -57,19 +57,31 @@ func LoadTokens() map[string]interface{} {
 }
 
 func SaveTokens(data map[string]interface{}, email string, password string) error {
-	payload := map[string]interface{}{
-		"saved_at":     time.Now().UTC().Format(time.RFC3339),
-		"raw_response": data,
-	}
+	payload := LoadTokens()
+	payload["saved_at"] = time.Now().UTC().Format(time.RFC3339)
+	payload["raw_response"] = data
+
 	if email != "" {
 		payload["_email"] = base64.StdEncoding.EncodeToString([]byte(email))
 	}
 	if password != "" {
 		payload["_password"] = base64.StdEncoding.EncodeToString([]byte(password))
 	}
+	
 	EnsureDbDir()
 	bytes, _ := json.MarshalIndent(payload, "", "  ")
 	return os.WriteFile(TokenFile, bytes, 0644)
+}
+
+func GetSavedCredentials() (string, string) {
+	tokens := LoadTokens()
+	email, _ := tokens["_email"].(string)
+	password, _ := tokens["_password"].(string)
+	
+	eBytes, _ := base64.StdEncoding.DecodeString(email)
+	pBytes, _ := base64.StdEncoding.DecodeString(password)
+	
+	return string(eBytes), string(pBytes)
 }
 
 func GetBearerToken() string {
