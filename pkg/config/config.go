@@ -19,6 +19,7 @@ var (
 	AuthDomain            = ".amazon.es"
 	DeviceType            = "A1MPSLFC7L5AFK"
 	DeviceSerial          = "0f7d079cbd9b4e6e8512568000871bd3"
+	DeviceAndroidId       = "a9436c01fd552459"
 	AppName               = "com.amazon.flex.rabbit"
 	AppVersion            = "314455008"
 	SoftwareVersion       = "130050002"

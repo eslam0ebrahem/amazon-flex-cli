@@ -44,8 +44,25 @@ var setActiveDeviceCmd = &cobra.Command{
 	},
 }
 
+var deviceNonceCmd = &cobra.Command{
+	Use:   "nonce",
+	Short: "Request an App Attestation Nonce from Amazon",
+	Run: func(cmd *cobra.Command, args []string) {
+		res, err := api.GetAppAttestationNonce()
+		if err != nil {
+			fmt.Println("Error:", err)
+			os.Exit(1)
+		}
+		data, _ := json.MarshalIndent(res, "", "  ")
+		fmt.Println("App Attestation Nonce Response:")
+		fmt.Println(string(data))
+	},
+}
+
 func init() {
 	rootCmd.AddCommand(deviceCmd)
 	deviceCmd.AddCommand(activeDeviceCmd)
 	deviceCmd.AddCommand(setActiveDeviceCmd)
+	deviceCmd.AddCommand(deviceNonceCmd)
 }
+

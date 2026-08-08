@@ -292,7 +292,7 @@ func SetActiveDevice() error {
 	}
 
 	payload := map[string]interface{}{
-		"deviceId": config.DeviceSerial,
+		"deviceId": config.DeviceAndroidId,
 	}
 
 	clientTime := fmt.Sprintf("%d", time.Now().UnixNano()/1e6)
@@ -347,3 +347,34 @@ func GetRealTimeAvailability() (map[string]interface{}, error) {
 
 	return *resp.Result().(*map[string]interface{}), nil
 }
+
+func GetAppAttestationNonce() (map[string]interface{}, error) {
+	token := config.GetBearerToken()
+	if token == "" {
+		return nil, errors.New("not logged in")
+	}
+
+	clientTime := fmt.Sprintf("%d", time.Now().UnixNano()/1e6)
+	instanceId := uuid.New().String()
+
+	resp, err := client.R().
+		SetHeader("Host", "prod.eu-west-1.api.app-attestation.last-mile.amazon.dev").
+		SetHeader("x-amz-access-token", token).
+		SetHeader("X-Amzn-Marketplace-Id", config.MarketplaceId).
+		SetHeader("User-Agent", config.RabbitUserAgent).
+		SetHeader("X-Flex-Client-Time", clientTime).
+		SetHeader("x-flex-instance-id", instanceId).
+		SetHeader("X-Amzn-RequestId", uuid.New().String()).
+		SetResult(&map[string]interface{}{}).
+		Get("https://prod.eu-west-1.api.app-attestation.last-mile.amazon.dev/v1/nonce/id/" + config.DeviceAndroidId)
+
+	if err != nil {
+		return nil, err
+	}
+	if resp.IsError() {
+		return nil, errors.New(resp.String())
+	}
+
+	return *resp.Result().(*map[string]interface{}), nil
+}
+
