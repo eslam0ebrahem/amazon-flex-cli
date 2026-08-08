@@ -15,6 +15,7 @@ type PackageDetails struct {
 	ActivityId         string
 	ActivityType       string
 	Status             string
+	Reason             string
 	ItemId             string
 	ClientOrderId      string
 	TrackingId         string
@@ -210,6 +211,14 @@ func GetDetails(scannableId string) (*PackageDetails, error) {
 		}
 	}
 
+	reason := item.Get("reason").String()
+	if reason == "" || reason == "NONE" {
+		reason = tr.Get("transportObjectReason").String()
+		if reason == "" || reason == "NONE" {
+			reason = tr.Get("reason").String()
+		}
+	}
+
 	// TrId: Amazon's itinerary JSON stores the transport request ID under "id",
 	// not "transportRequestId". Try both so we handle any itinerary schema variant.
 	trId := tr.Get("id").String()
@@ -244,6 +253,7 @@ func GetDetails(scannableId string) (*PackageDetails, error) {
 		ActivityId:       act.Get("activityId").String(),
 		ActivityType:     actType,
 		Status:           state,
+		Reason:           reason,
 		ItemId:           itemId,
 		ClientOrderId:    tr.Get("clientMetaData.clientOrderId").String(),
 		TrackingId:       tr.Get("clientMetaData.trackingId").String(),

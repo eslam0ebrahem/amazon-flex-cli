@@ -371,15 +371,16 @@ func (m dashModel) rebuildTable() dashModel {
 	// Column widths — based on what a delivery driver actually needs to scan
 	numW    := 4  // row number
 	idW     := 15 // scannable ID (AEG... prefix, last digits matter)
-	statusW := 16 // PENDING_PICKUP / PICKED_UP
-	recipW  := 20 // recipient name
-	imgW    := 5  // 📷 indicator
-	phoneW := 15
-	pkgsW := 8
-	mapsW := 33
+	reasonW := 15
+	statusW := 15
+	recipW  := 20
+	imgW    := 5
+	phoneW  := 15
+	pkgsW   := 8
+	mapsW   := 33
 
 	// Distribute remaining width to address
-	addrW := w - (numW + idW + statusW + recipW + phoneW + mapsW + pkgsW + imgW + 23)
+	addrW := w - (numW + idW + statusW + reasonW + recipW + phoneW + mapsW + pkgsW + imgW + 26)
 	if addrW < 18 {
 		addrW = 18
 	}
@@ -388,6 +389,7 @@ func (m dashModel) rebuildTable() dashModel {
 		{Title: " # ", Width: numW},
 		{Title: "Scannable ID", Width: idW},
 		{Title: "Status", Width: statusW},
+		{Title: "Reason", Width: reasonW},
 		{Title: "Recipient", Width: recipW},
 		{Title: "Phone", Width: phoneW},
 		{Title: "Address", Width: addrW},
@@ -463,6 +465,16 @@ func (m dashModel) rebuildTable() dashModel {
 		// ANSI escape codes inflate byte-length, breaking the table's cell-clipping logic.
 		status := statusLabel(p.Status)
 
+		reason := p.Reason
+		if reason == "NONE" || reason == "" {
+			reason = "—"
+		} else {
+			rRunes := []rune(reason)
+			if len(rRunes) > reasonW-1 {
+				reason = string(rRunes[:reasonW-2]) + "…"
+			}
+		}
+
 		phone := p.RecipientPhone
 		if phone == "" {
 			phone = "—"
@@ -474,6 +486,7 @@ func (m dashModel) rebuildTable() dashModel {
 			fmt.Sprintf(" %d", p.Idx),
 			shortID,
 			status,
+			reason,
 			recip,
 			phone,
 			addr,
@@ -541,7 +554,23 @@ func (m dashModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m = m.rebuildTable()
 			case "p":
 				if m.state == vsDetail && m.detailPkg != nil {
-					m = m.doPickup(m.detailPkg)
+					m = m.doUpdate(m.detailPkg, "pickup")
+				}
+			case "b":
+				if m.state == vsDetail && m.detailPkg != nil {
+					m = m.doUpdate(m.detailPkg, "closed")
+				}
+			case "n":
+				if m.state == vsDetail && m.detailPkg != nil {
+					m = m.doUpdate(m.detailPkg, "no-address")
+				}
+			case "C":
+				if m.state == vsDetail && m.detailPkg != nil {
+					m = m.doUpdate(m.detailPkg, "customer-reschedule")
+				}
+			case "o":
+				if m.state == vsDetail && m.detailPkg != nil {
+					m = m.doUpdate(m.detailPkg, "out-of-time")
 				}
 			case "S":
 				if m.state == vsDetail && m.detailPkg != nil {
@@ -613,7 +642,23 @@ func (m dashModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 		case "p":
 			if len(m.displayPkgs) > 0 {
-				m = m.doPickup(m.displayPkgs[m.table.Cursor()])
+				m = m.doUpdate(m.displayPkgs[m.table.Cursor()], "pickup")
+			}
+		case "b":
+			if len(m.displayPkgs) > 0 {
+				m = m.doUpdate(m.displayPkgs[m.table.Cursor()], "closed")
+			}
+		case "n":
+			if len(m.displayPkgs) > 0 {
+				m = m.doUpdate(m.displayPkgs[m.table.Cursor()], "no-address")
+			}
+		case "C":
+			if len(m.displayPkgs) > 0 {
+				m = m.doUpdate(m.displayPkgs[m.table.Cursor()], "customer-reschedule")
+			}
+		case "o":
+			if len(m.displayPkgs) > 0 {
+				m = m.doUpdate(m.displayPkgs[m.table.Cursor()], "out-of-time")
 			}
 
 		case "S":
@@ -728,17 +773,19 @@ func (m dashModel) doRefresh() dashModel {
 	return m
 }
 
-func (m dashModel) doPickup(p *enrichedPkg) dashModel {
-	// Read token directly — do NOT go through api.RecordPickup which internally
-	// calls config.GetBearerToken() again. If the token file was ever written in
-	// a non-standard format, that internal call would return "" and fail silently.
+func (m dashModel) doUpdate(p *enrichedPkg, statusKey string) dashModel {
 	token := config.GetBearerToken()
 	if token == "" {
-		m.resultTitle = "✖  Pickup Failed — " + p.ScannableId
+		m.resultTitle = "✖  Action Failed — " + p.ScannableId
 		m.resultContent = lipgloss.NewStyle().Foreground(cRed).
 			Render("Not logged in — run  flexcli login <email> <password>  first.")
 		m.resultIsError = true
 		m.state = vsResult
+		return m
+	}
+
+	statusMapRef, exists := statusMap[statusKey]
+	if !exists {
 		return m
 	}
 
@@ -748,7 +795,7 @@ func (m dashModel) doPickup(p *enrichedPkg) dashModel {
 	}
 	newLat, newLon := utils.GenerateGPSInCircle(lat, lon, 3.0)
 	nowEpoch := float64(time.Now().UnixNano()) / 1e9
-	payload := api.BuildPickupPayload(p.ScannableId, p.TrId, p.ItemId, newLat, newLon, nowEpoch)
+	payload := api.BuildUpdatePayload(p.ScannableId, p.TrId, p.ItemId, newLat, newLon, nowEpoch, statusMapRef.Reason, statusMapRef.State)
 
 	dimStyle := lipgloss.NewStyle().Foreground(cDim)
 	gpsLine := dimStyle.Render(fmt.Sprintf("GPS spoofed → %.6f, %.6f  |  TR: %s", newLat, newLon, p.TrId))
@@ -765,7 +812,7 @@ func (m dashModel) doPickup(p *enrichedPkg) dashModel {
 		Post(config.RecordActionsEndpoint)
 
 	if err != nil {
-		m.resultTitle = "✖  Pickup Failed — " + p.ScannableId
+		m.resultTitle = "✖  Update Failed — " + p.ScannableId
 		m.resultContent = lipgloss.NewStyle().Foreground(cRed).Render(err.Error()) +
 			"\n\n" + gpsLine
 		m.resultIsError = true
@@ -777,7 +824,7 @@ func (m dashModel) doPickup(p *enrichedPkg) dashModel {
 		if len(body) > 400 {
 			body = body[:400] + "…"
 		}
-		m.resultTitle = fmt.Sprintf("✖  Pickup Failed [HTTP %d] — %s", resp.StatusCode(), p.ScannableId)
+		m.resultTitle = fmt.Sprintf("✖  Update Failed [HTTP %d] — %s", resp.StatusCode(), p.ScannableId)
 		m.resultContent = lipgloss.NewStyle().Foreground(cRed).Render(body) +
 			"\n\n" + gpsLine
 		m.resultIsError = true
@@ -791,7 +838,7 @@ func (m dashModel) doPickup(p *enrichedPkg) dashModel {
 	if len(respStr) > 500 {
 		respStr = respStr[:500] + "\n…"
 	}
-	m.resultTitle = "✔  Pickup Sent — " + p.ScannableId
+	m.resultTitle = "✔  Package Updated — " + p.ScannableId
 	m.resultContent = gpsLine + "\n\n" +
 		lipgloss.NewStyle().Foreground(cDim).Render(respStr)
 	m.resultIsError = false
@@ -1102,7 +1149,7 @@ func (m dashModel) renderDetailPanel(w int) string {
 
 	// ── Action hints ──────────────────────────────────────────────────────────
 	body += "\n" + sep + "\n"
-	body += m.hintBar([]string{"p", "Pickup", "S", "Simulate", "c", "Show Phone", "Esc", "Close"})
+	body += m.hintBar([]string{"p", "Pickup", "b", "Closed", "n", "No Address", "C", "Resched", "o", "Out Time", "S", "Simulate", "c", "Phone", "Esc", "Close"})
 
 	panel := lipgloss.NewStyle().
 		Border(lipgloss.RoundedBorder()).
@@ -1186,9 +1233,10 @@ func (m dashModel) renderFooter(w int) string {
 			"2", "Picked Up",
 			"3", "All",
 			"p", "Pickup",
+			"b", "Closed",
+			"n", "No Address",
 			"S", "Simulate",
 			"r", "Refresh",
-			"T", "Re-auth Token",
 			"q", "Quit",
 		})
 	}
